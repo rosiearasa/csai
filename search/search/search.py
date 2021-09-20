@@ -1,3 +1,13 @@
+from game import Agent
+from game import AgentState
+from game import Directions
+from game import Grid
+
+import util
+from pacman import GameState
+
+
+
 # search.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
@@ -18,6 +28,17 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+class Node:
+    def __init__(self, curr_state,parent_node,action, step_cost,total_path_cost) -> None:
+        
+        self.curr_state = curr_state
+        self.parent_node =parent_node
+        self.action =action
+        self.step_cost =step_cost
+        self.total_path_cost = total_path_cost
+      
+
+
 
 class SearchProblem:
     """
@@ -86,8 +107,27 @@ def depthFirstSearch(problem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #initialize the frontier 
+    validActions ={'East' :Directions.EAST, 'West' :Directions.West,
+                             'North' :Directions.EAST, 'South' :Directions.EAST }
+
+                             
+
+
+    
+    frontier =problem.getPacmanState()
+    print(frontier)
+
+    explored = {problem.getPacmanPosition, True}
+
+    #while frontier is  no empty
+    if frontier:
+        print(explored)
+
+
+
+
+        util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
@@ -117,3 +157,5 @@ bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+
+depthFirstSearch()
