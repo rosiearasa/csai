@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -61,6 +61,16 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
+"""node class definnition"""
+class Node:
+    def __init__(self, state, parent_node, action,step_cost, path_cost):
+        self.state =state
+        self.parent = parent_node
+        self.action = action
+        self.step_cost =step_cost
+        self.path_cost= path_cost
+
+
 
 def tinyMazeSearch(problem):
     """
@@ -73,26 +83,87 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
-    """
-    Search the deepest nodes in the search tree first.
 
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
 
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
+    #uses the LIFO stack defined
+    frontier = util.Stack()
 
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    explored = []
+
+    #first node
+    startState = problem.getStartState()
+
+    startNode = (startState, [])
+
+
+    # parentNode = Node("Start", None, None, 0)
+
+
+    frontier.push(startNode)
+
+
+    #check if not empty
+    while frontier:
+
+        #a node with actions
+        currentState, actions = frontier.pop()
+
+        if currentState not in explored:
+
+            #mark as expored
+            explored.append(currentState)
+
+            if problem.isGoalState(currentState):
+                #return a list of actios from the start state ti the goal state
+                return actions
+
+            else:
+                #for each successor of the goal state
+                successors = problem.getSuccessors(currentState)
+
+                #if not in explored add node of the successor onto the frontier
+                for succState, succAction, succCost in successors:
+                    newAction = actions + [succAction]
+                    newNode = (succState, newAction)
+                    frontier.push(newNode)
+    return actions
 
 def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # initialize the FIFO queue
+    frontier =util.Queue()
+
+    #initialize explored
+    explored = []
+
+    startState = problem.getStartState()
+    startNode = (startState, [], 0) #state action and cost
+
+    frontier.push(startNode)
+
+    while frontier:
+
+        currentState, actions, currentCost = frontier.pop()
+
+        if currentState not in explored:
+            #put state into the node
+            explored.append(currentState)
+
+            if problem.isGoalState(currentState):
+                return actions
+
+            else:
+                successors = problem.getSuccessors(currentState)
+
+                for succState, succAction, succCost in successors:
+                    newAction = actions + [succAction]
+                    newCost = currentCost+succCost
+                    newNode =(succState, newAction, newCost)
+
+                    frontier.push(newNode)
+
+    return actions
+
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""

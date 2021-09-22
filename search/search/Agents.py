@@ -1,6 +1,7 @@
 import random
+
 from pacman import GameState
-from game import Agent
+from game import Actions, Agent
 from game import Directions
 
 
@@ -28,10 +29,10 @@ class DumbAgent(Agent):
     "a random agent that moves in a random direction as long as there are no walls"
 class RandomAgent(Agent):
 
-     def getAction(self, state):
-        #remove stop 
+    def getAction(self, state):
+        #remove stop
         legalmoves = [i for i in state.getLegalPacmanActions() if i != 'Stop']
-        #legalmoves = state.getLegalPacmanActions()
+
         print(legalmoves)
         return random.choice(legalmoves)
 
@@ -39,33 +40,28 @@ class RandomAgent(Agent):
 class ReflexAgent(Agent):
 
     def getAction(self, state):
-        
-        
-        validmove = [i for i in state.getLegalActions() if i != 'Stop']
-        #choose actions if they lead tofood pellet being eaten
-        currentFood = state.getFood()
-        x =state.getPacmanPosition()
-        xx= state.generatePacmanSuccessor()
-        if x == True:
-            print(x)
-            print(currentFood)
+        validmoves = [i for i in state.getLegalActions()if i != 'Stop']
 
-        #otherwise choose randomly of the options available
+
+        actions= random.choice(validmoves)
+
+         # Choose one of actions
+        nextgameState = state.generatePacmanSuccessor(actions)
+        currfood = nextgameState.getFood()
+
+        foodrem =currfood.count()
+
+        # print("count of food ", foodrem)
+
+        # print("current food state ", state.getPacmanState())
+        nextmove = nextgameState.getPacmanState()
+
+        # print("next ferr  ", nextmove)
+
+        if nextgameState is nextmove and currfood[nextmove]=='T':
+            # print("current food ", currfood)
+            return nextgameState
+
+
         else:
-            print("valid ",validmove)
-        
-            return random.choice(validmove)
-
-
-
-
-        
-       
-        
-       
-
-        
-       
-
-
-
+            return random.choice(validmoves)
