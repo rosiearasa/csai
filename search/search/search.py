@@ -1,3 +1,13 @@
+from game import Agent
+from game import AgentState
+from game import Directions
+
+
+import util
+from pacman import GameState
+
+
+
 # search.py
 # ---------
 # Licensing Information:  You are free to use or extend these projects for
@@ -18,6 +28,17 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+class Node:
+    def __init__(self, curr_state,parent_node,action, step_cost,total_path_cost) -> None:
+
+        self.curr_state = curr_state
+        self.parent_node =parent_node
+        self.action =action
+        self.step_cost =step_cost
+        self.total_path_cost = total_path_cost
+
+
+
 
 class SearchProblem:
     """
@@ -61,7 +82,10 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
-"""node class definnition"""
+
+
+
+"""node class definition"""
 class Node:
     def __init__(self, state, parent_node, action,step_cost, path_cost):
         self.state =state
@@ -96,7 +120,6 @@ def depthFirstSearch(problem):
     startNode = (startState, [])
 
 
-    # parentNode = Node("Start", None, None, 0)
 
 
     frontier.push(startNode)
@@ -107,6 +130,7 @@ def depthFirstSearch(problem):
 
         #a node with actions
         currentState, actions = frontier.pop()
+
 
         if currentState not in explored:
 
@@ -122,9 +146,9 @@ def depthFirstSearch(problem):
                 successors = problem.getSuccessors(currentState)
 
                 #if not in explored add node of the successor onto the frontier
-                for succState, succAction, succCost in successors:
-                    newAction = actions + [succAction]
-                    newNode = (succState, newAction)
+                for successorState, successorAction, successorCost in successors:
+                    newAction = actions + [successorAction]
+                    newNode = (successorState, newAction)
                     frontier.push(newNode)
     return actions
 
@@ -154,10 +178,10 @@ def breadthFirstSearch(problem):
             else:
                 successors = problem.getSuccessors(currentState)
 
-                for succState, succAction, succCost in successors:
-                    newAction = actions + [succAction]
-                    newCost = currentCost+succCost
-                    newNode =(succState, newAction, newCost)
+                for successorState, successorAction, successorCost in successors:
+                    newAction = actions + [successorAction]
+                    newCost = currentCost+successorCost
+                    newNode =(successorState, newAction, newCost)
 
                     frontier.push(newNode)
 
